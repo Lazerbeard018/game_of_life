@@ -1,17 +1,58 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="GameBoard\GameBoardInterface.h">
+      <Filter>GameBoard</Filter>
+    </ClCompile>
+    <ClCompile Include="GameBoard\Implementations\SimpleAliveCelListBoard.cpp">
+      <Filter>GameBoard\Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="Input\Input.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Output\Output.cpp">
+      <Filter>Output</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\TestEngine.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="GameBoard">
+      <UniqueIdentifier>{ed471172-b44c-4358-8710-39add03ab003}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    <Filter Include="GameBoard\Implementations">
+      <UniqueIdentifier>{ab5d7187-1e49-4a8e-9131-e754c60e0d43}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="Input">
+      <UniqueIdentifier>{1c4e8585-9e83-4222-a63b-7fe1b8ba8e93}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Output">
+      <UniqueIdentifier>{9fbf5d4e-507a-47e6-8ded-f0a2ca1aeed4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests">
+      <UniqueIdentifier>{382f84c8-fd9e-43d7-a8a9-af7ef7049da0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\TestData">
+      <UniqueIdentifier>{1b5d426a-cf05-4171-9793-c27490946a70}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GameBoard\GameBoardCoord.h">
+      <Filter>GameBoard</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\Input.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Output\Output.h">
+      <Filter>Output</Filter>
+    </ClInclude>
+    <ClInclude Include="Tests\TestEngine.h">
+      <Filter>Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="GameBoard\GameBoardDefines.h">
+      <Filter>GameBoard</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
