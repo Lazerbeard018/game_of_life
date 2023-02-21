@@ -5,7 +5,7 @@
 
 namespace
 {
-	bool AddCellsFromString(const std::string& input, GameBoard::IGameBoardPtr& gameBoard)
+	bool AddCellsFromString(const std::string& input, GameBoard::IGameBoard& gameBoard)
 	{	
 		//Should capture integer values and negative number symbols
 		std::regex number_regex("-?\\d+");
@@ -33,14 +33,14 @@ namespace
 
 			long long y = atoll(numberIt->str().c_str());
 
-			gameBoard->CreateCell({ x, y });
+			gameBoard.CreateCell({ x, y });
 		}
 
 		return true;
 	}
 }
 
-void Input::CreateGameFromStream(std::istream& stream, GameBoard::IGameBoardPtr& gameBoard)
+void Input::CreateGameFromStream(std::istream& stream, GameBoard::IGameBoard& gameBoard)
 {
 	std::string input;
 	std::getline(stream, input);
@@ -56,14 +56,16 @@ void Input::CreateGameFromStream(std::istream& stream, GameBoard::IGameBoardPtr&
 		std::getline(stream, input);
 	}
 
+	//Signal that this version of the board is ready to be read;
+	gameBoard.FinishCurrentGeneration();
 }
 
-void Input::CreateGameFromStdInput(GameBoard::IGameBoardPtr& gameBoard)
+void Input::CreateGameFromStdInput(GameBoard::IGameBoard& gameBoard)
 {
 	CreateGameFromStream(std::cin, gameBoard);
 }
 
-bool Input::CreateGameFromFile(std::filesystem::path filename, GameBoard::IGameBoardPtr& gameBoard)
+bool Input::CreateGameFromFile(std::filesystem::path filename, GameBoard::IGameBoard& gameBoard)
 {
 	std::fstream fileStream;
 	fileStream.open(filename, std::fstream::in);

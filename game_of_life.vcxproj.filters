@@ -17,6 +17,15 @@
     <ClCompile Include="Tests\TestEngine.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
+    <ClCompile Include="GameBoard\Implementations\StaticGridBoard.cpp">
+      <Filter>GameBoard\Implementations</Filter>
+    </ClCompile>
+    <ClCompile Include="GameBoard\GameBoardCoord.cpp">
+      <Filter>GameBoard</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Game.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GameBoard">
@@ -37,6 +46,30 @@
     <Filter Include="Tests\TestData">
       <UniqueIdentifier>{1b5d426a-cf05-4171-9793-c27490946a70}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Tests\TestData\Basic_IO">
+      <UniqueIdentifier>{cde2a8d3-67e3-41b4-b684-38cc07879f12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\TestData\Basic_IO\Identity">
+      <UniqueIdentifier>{b65fe731-5062-47c9-828b-14b363522f6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\TestData\8x8_Board">
+      <UniqueIdentifier>{45d95b2d-bab2-430b-9ca8-2449849baa6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\TestData\8x8_Board\Identity">
+      <UniqueIdentifier>{7352b4bd-6f6b-4f76-ae42-2f4c7efc810c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game">
+      <UniqueIdentifier>{ae52daf7-e48a-4cef-a017-1d57e759a0fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\TestData\8x8_Board\OneGeneration">
+      <UniqueIdentifier>{00595c99-82c1-4ccc-8d08-b80d36c066f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\TestData\8x8_Board\4Points">
+      <UniqueIdentifier>{83c1241b-73b5-4b91-8c50-29026ee1f8d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\TestData\8x8_Board\VerticalLive">
+      <UniqueIdentifier>{88012bb0-8eca-4d9d-ba7e-aef047094c35}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameBoard\GameBoardCoord.h">
@@ -54,5 +87,40 @@
     <ClInclude Include="GameBoard\GameBoardDefines.h">
       <Filter>GameBoard</Filter>
     </ClInclude>
+    <ClInclude Include="Game\Game.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="testdata\Basic_IO\Identity\input.life">
+      <Filter>Tests\TestData\Basic_IO\Identity</Filter>
+    </None>
+    <None Include="testdata\Basic_IO\Identity\diff.life">
+      <Filter>Tests\TestData\Basic_IO\Identity</Filter>
+    </None>
+    <None Include="testdata\8x8_Board\Identity\diff.life">
+      <Filter>Tests\TestData\8x8_Board\Identity</Filter>
+    </None>
+    <None Include="testdata\8x8_Board\Identity\input.life">
+      <Filter>Tests\TestData\8x8_Board\Identity</Filter>
+    </None>
+    <None Include="testdata\8x8_Board\OneGeneration\diff.life">
+      <Filter>Tests\TestData\8x8_Board\OneGeneration</Filter>
+    </None>
+    <None Include="testdata\8x8_Board\OneGeneration\input.life">
+      <Filter>Tests\TestData\8x8_Board\OneGeneration</Filter>
+    </None>
+    <None Include="testdata\8x8_Board\4Points\diff.life">
+      <Filter>Tests\TestData\8x8_Board\4Points</Filter>
+    </None>
+    <None Include="testdata\8x8_Board\4Points\input.life">
+      <Filter>Tests\TestData\8x8_Board\4Points</Filter>
+    </None>
+    <None Include="testdata\8x8_Board\VerticalLive\diff.life">
+      <Filter>Tests\TestData\8x8_Board\VerticalLive</Filter>
+    </None>
+    <None Include="testdata\8x8_Board\VerticalLive\input.life">
+      <Filter>Tests\TestData\8x8_Board\VerticalLive</Filter>
+    </None>
   </ItemGroup>
 </Project>

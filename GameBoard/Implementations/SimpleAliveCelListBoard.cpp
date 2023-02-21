@@ -42,6 +42,17 @@ namespace GameBoard
 		}
 
 		/// <summary>
+		/// Does nothing
+		/// </summary>
+		void FinishCurrentGeneration() {}
+
+		/// <summary>
+		/// Does nothing
+		/// </summary>
+		/// <param name="gameSim"></param>
+		void IterateCurrentGenerationBoard(GameSimFunction gameSim) {}
+
+		/// <summary>
 		/// Since this only stores the cells that are alive in the first place, running a function only on the alive cells is trivial.
 		/// </summary>
 		/// <param name="fn">The function to run on all the alive cells.</param>
@@ -57,7 +68,7 @@ namespace GameBoard
 		CoordSet m_aliveCells;
 	};
 
-	IGameBoardPtr GameBoard::CreateSimpleAliveCellListBoard()
+	IGameBoardPtr CreateSimpleAliveCellListBoard()
 	{
 		return std::make_unique<SimpleAliveCellListBoard>();
 	}

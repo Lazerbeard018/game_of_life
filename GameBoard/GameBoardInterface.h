@@ -11,6 +11,8 @@ namespace GameBoard
 	class IGameBoard
 	{
 	public:
+		using GameSimFunction = void (*)(bool alive, unsigned char aliveRelatives, bool& aliveNextGeneration);
+
 		/// <summary>
 		/// Enables derived classes to be cleaned up properly
 		/// </summary>
@@ -28,6 +30,19 @@ namespace GameBoard
 		virtual void CreateCell(const Coord& position) = 0;
 
 		/// <summary>
+		/// Allows us to do some work when we are finished with a generation in the game of life. We may need to do some cleanup between
+		/// generations.
+		/// </summary>
+		virtual void FinishCurrentGeneration() = 0;
+
+		/// <summary>
+		/// So this is the meat of the game of life sim as far as the board is concerned. This allows access to however the board decides
+		/// to store the game of life board in a way that lets us run the game of life with our rules. 
+		/// </summary>
+		/// <param name="gameSim">The function that will run the game of life</param>
+		virtual void IterateCurrentGenerationBoard(GameSimFunction gameSim) = 0;
+
+		/// <summary>
 		/// I was really trying to figure out how to capture the contents of the grid, without directly exposing the
 		/// grid's structure and without creating additional memory just to inspect things about the grid, especially since
 		/// it is technically possible to fill a huge area with grid squares. Making an iterator to return is a problem since
@@ -42,7 +57,6 @@ namespace GameBoard
 	};
 
 	using IGameBoardPtr = std::unique_ptr<IGameBoard>;
-	using IGameBoardPtrConst = std::unique_ptr<const IGameBoard>;
 
 	/// <summary>
 	/// This is a simple board that just has a list of the live cells. It's really not meant to do game of life sim on, 
@@ -55,4 +69,14 @@ namespace GameBoard
 	/// </summary>
 	/// <returns>A generic game board we can do game of life sim on</returns>
 	IGameBoardPtr CreateSimpleAliveCellListBoard();
+
+	/// <summary>
+	/// This is another simple board that I don't expect to use as my final set, however I do think it will be a building block.
+	/// This game board is statically allocated and has a grid of a fixed size. As such it is rather inflexible by itself.
+	/// It won't support big integers and within this grid we are not being space efficient (we are storing data to account
+	/// for empty spaces) but it's very easy to run the rules of the game of life on such a board, since we can iterate all the locations
+	/// and compare adjacent spaces.
+	/// </summary>
+	/// <returns>A generic game board we can do game of life sim on</returns>
+	IGameBoardPtr CreateStaticGridBoard64bit();
 }

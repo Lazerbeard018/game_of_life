@@ -144,8 +144,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GameBoard\GameBoardCoord.cpp" />
     <ClCompile Include="GameBoard\GameBoardInterface.h" />
+    <ClCompile Include="GameBoard\Implementations\StaticGridBoard.cpp" />
     <ClCompile Include="GameBoard\Implementations\SimpleAliveCelListBoard.cpp" />
+    <ClCompile Include="Game\Game.cpp" />
     <ClCompile Include="Input\Input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Output\Output.cpp" />
@@ -154,9 +157,22 @@
   <ItemGroup>
     <ClInclude Include="GameBoard\GameBoardCoord.h" />
     <ClInclude Include="GameBoard\GameBoardDefines.h" />
+    <ClInclude Include="Game\Game.h" />
     <ClInclude Include="Input\Input.h" />
     <ClInclude Include="Output\Output.h" />
     <ClInclude Include="Tests\TestEngine.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="testdata\8x8_Board\4Points\diff.life" />
+    <None Include="testdata\8x8_Board\4Points\input.life" />
+    <None Include="testdata\8x8_Board\Identity\diff.life" />
+    <None Include="testdata\8x8_Board\Identity\input.life" />
+    <None Include="testdata\8x8_Board\OneGeneration\diff.life" />
+    <None Include="testdata\8x8_Board\OneGeneration\input.life" />
+    <None Include="testdata\8x8_Board\VerticalLive\diff.life" />
+    <None Include="testdata\8x8_Board\VerticalLive\input.life" />
+    <None Include="testdata\Basic_IO\Identity\diff.life" />
+    <None Include="testdata\Basic_IO\Identity\input.life" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -11,4 +11,7 @@ namespace GameBoard
 		Unit x;
 		Unit y;
 	};
+
+	Unit Get1DIndexFromCoord(const Coord& coord, Unit columnSize, Unit padding);
+	Coord GetCoordFrom1DIndex(Unit index, Unit columnSize, Unit padding);
 }

@@ -14,18 +14,18 @@ namespace Input
 	/// </summary>
 	/// <param name="stream">Standard input stream to read live cell positions.</param>
 	/// <param name="gameBoard">The gameboard we intend to fill out.</param>
-	void CreateGameFromStream(std::istream& stream, GameBoard::IGameBoardPtr& gameBoard);
+	void CreateGameFromStream(std::istream& stream, GameBoard::IGameBoard& gameBoard);
 
 	/// <summary>
 	/// Fills out game of life gameboard with integer numbers entered from standard output.
 	/// </summary>
 	/// <param name="gameBoard">The gameboard we intend to fill out.</param>
-	void CreateGameFromStdInput(GameBoard::IGameBoardPtr& gameBoard);
+	void CreateGameFromStdInput(GameBoard::IGameBoard& gameBoard);
 
 	/// <summary>
 	/// Fills out game of life gameboard with integer numbers found in a file.
 	/// </summary>
 	/// <param name="filename">A path to the file we intend to load, either relative to the working directory or a full path.</param>
 	/// <param name="gameBoard">The gameboard we intend to fill out.</param>
-	bool CreateGameFromFile(std::filesystem::path filename, GameBoard::IGameBoardPtr& gameBoard);
+	bool CreateGameFromFile(std::filesystem::path filename, GameBoard::IGameBoard& gameBoard);
 }
