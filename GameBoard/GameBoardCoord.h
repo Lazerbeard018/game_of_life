@@ -32,4 +32,25 @@ namespace GameBoard
 			return lhs.y < rhs.y;
 		}
 	};
+
+	class HashCoord
+	{
+	public:
+		size_t operator()(const Coord& coord) const
+		{
+			std::hash<Unit> unitHash;
+			size_t x = unitHash(coord.x);
+			size_t y = unitHash(coord.y);
+			return x ^ y + 0x9e3779b9 + (x << 6) + (x >> 2);
+		}
+	};
+
+	class EqualCoord
+	{
+	public:
+		size_t operator()(const Coord& lhs, const Coord& rhs) const
+		{
+			return lhs.x == rhs.x && rhs.y == lhs.y;
+		}
+	};
 }

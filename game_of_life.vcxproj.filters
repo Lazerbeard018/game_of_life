@@ -82,6 +82,12 @@
     <Filter Include="Tests\TestData\Big_Board\OneGeneration">
       <UniqueIdentifier>{54160197-6691-40d4-9437-f2ea77009024}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Tests\TestData\Stress_Test">
+      <UniqueIdentifier>{0454f3d7-f4e6-428d-851e-3f5c5b1e5774}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\TestData\Stress_Test\TheLine">
+      <UniqueIdentifier>{82e5cb59-b404-4e39-9572-cc5744a0bae3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameBoard\GameBoardCoord.h">

@@ -1,6 +1,5 @@
 #include "../GameBoardInterface.h"
 #include <map>
-#include <map>
 
 using namespace GameBoard;
 
@@ -238,7 +237,7 @@ namespace
 			auto foundGrid = m_connectedGrids.find(macroCoord);
 			if (foundGrid != m_connectedGrids.end())
 			{
-				foundGrid->second.board->GetCell(localCoord);
+				return foundGrid->second.board->GetCell(localCoord);
 			}
 
 			return false;
@@ -255,7 +254,7 @@ namespace
 			auto foundGrid = m_connectedGrids.find(macroCoord);
 			if (foundGrid != m_connectedGrids.end())
 			{
-				foundGrid->second.board->GetCurrentCell(localCoord);
+				return foundGrid->second.board->GetCurrentCell(localCoord);
 			}
 
 			return false;
@@ -418,6 +417,8 @@ namespace
 		const Unit m_gridSize;
 		GameBoardCreationFn m_subBoardCreationFn;
 		std::map<Coord, ConnectedGrid, LessCoord> m_connectedGrids;
+
+		//std::unordered_map<Coord, ConnectedGrid, HashCoord, EqualCoord> m_connectedGrids;
 	};
 }
 

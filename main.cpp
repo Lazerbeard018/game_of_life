@@ -19,7 +19,7 @@ int __cdecl main(int argc, const char* argv[])
 	//Otherwise, run the default program for the test.
 	else
 	{
-		GameBoard::IGameBoardPtr multiGridBoard = GameBoard::CreateMultiGridBoard(&GameBoard::CreateStaticGridBoard1000);
+		GameBoard::IGameBoardPtr multiGridBoard = GameBoard::CreateMultiGridBoard(&GameBoard::CreateStaticGridBoard6);
 
 		Input::CreateGameFromStdInput(*multiGridBoard);
 
@@ -30,6 +30,10 @@ int __cdecl main(int argc, const char* argv[])
 
 		Output::PrintGameBoardToStdOutput(*multiGridBoard);
 	}
-	
+
+	//Just making sure the memory leak finder works :)
+	//int* foo = new int[400];
+
+	std::cout << "Memory leaks found: " << (_CrtDumpMemoryLeaks() ? "YES" : "NO") << std::endl;
 	return 0;
 }

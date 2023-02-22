@@ -110,9 +110,7 @@ namespace GameBoard
 	IGameBoardPtr CreateSimpleAliveCellListBoard();
 
 	IGameBoardPtr CreateStaticGridBoard6();
-	IGameBoardPtr CreateStaticGridBoard1000();
-	IGameBoardPtr CreateStaticGridBoard4000();
-	IGameBoardPtr CreateStaticGridBoard10000();
+	IGameBoardPtr CreateStaticGridBoard();
 
 	IGameBoardPtr CreateMultiGridBoard(GameBoardCreationFn subBoardCreationFn);
 

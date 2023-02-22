@@ -116,30 +116,57 @@ namespace
 		/// <param name="gameSim">function that runs the game of life</param>
 		void IterateCurrentGenerationBoard(GameSimFn gameSim)
 		{
+			//Make my own array of bits which has a pattern for the areas we need to check for live cells.
+			GridBits testPattern = 0b111 | 0b101 << gridSizeWithPadding | 0b111 << gridSizeWithPadding * 2;
+			GridBits testedBits = 0;
+			Unit index = 0;
+			size_t numNeighborsSet = 0;
+			bool alive = false;
+
 			Coord placement = { 0,0 };
-			for (unsigned int x = 0; x < gridSize; ++x)
+			for (placement.y = 0; placement.y < gridSize; ++placement.y)
 			{
-				for (unsigned int y = 0; y < gridSize; ++y)
+				for (placement.x = 0; placement.x < gridSize; ++placement.x)
 				{
-					Unit index = 0;
-					Get1DIndexFromCoord(Coord{ x, y }, gridSizeWithPadding, paddingSize, index);
+					testedBits = m_gridBits[swapChain] & testPattern;
+					numNeighborsSet = testedBits.count();
 
-					unsigned int numNeighborsSet =
-						m_gridBits[swapChain].test(index - gridSizeWithPadding - 1) +
-						m_gridBits[swapChain].test(index - gridSizeWithPadding - 0) +
-						m_gridBits[swapChain].test(index - gridSizeWithPadding + 1) +
-						m_gridBits[swapChain].test(index - 1) +
-						m_gridBits[swapChain].test(index + 1) +
-						m_gridBits[swapChain].test(index + gridSizeWithPadding - 1) +
-						m_gridBits[swapChain].test(index + gridSizeWithPadding - 0) +
-						m_gridBits[swapChain].test(index + gridSizeWithPadding + 1);
+					Get1DIndexFromCoord(placement, gridSizeWithPadding, paddingSize, index);
 
-					bool alive = false;
 					gameSim(m_gridBits[swapChain].test(index), numNeighborsSet, alive);
 
 					m_gridBits[!swapChain].set(index, alive);
+
+					testPattern = testPattern << 1;
 				}
+				testPattern = testPattern << paddingSize*2;
 			}
+
+			//Original implementation, the above was found to be faster.
+			//Coord placement = { 0,0 };
+			//for (unsigned int x = 0; x < gridSize; ++x)
+			//{
+			//	for (unsigned int y = 0; y < gridSize; ++y)
+			//	{
+			//		Unit index = 0;
+			//		Get1DIndexFromCoord(Coord{ x, y }, gridSizeWithPadding, paddingSize, index);
+
+			//		unsigned int numNeighborsSet =
+			//			m_gridBits[swapChain].test(index - gridSizeWithPadding - 1) +
+			//			m_gridBits[swapChain].test(index - gridSizeWithPadding - 0) +
+			//			m_gridBits[swapChain].test(index - gridSizeWithPadding + 1) +
+			//			m_gridBits[swapChain].test(index - 1) +
+			//			m_gridBits[swapChain].test(index + 1) +
+			//			m_gridBits[swapChain].test(index + gridSizeWithPadding - 1) +
+			//			m_gridBits[swapChain].test(index + gridSizeWithPadding - 0) +
+			//			m_gridBits[swapChain].test(index + gridSizeWithPadding + 1);
+
+			//		bool alive = false;
+			//		gameSim(m_gridBits[swapChain].test(index), numNeighborsSet, alive);
+
+			//		m_gridBits[!swapChain].set(index, alive);
+			//	}
+			//}
 		}
 
 		/// <summary>
@@ -169,23 +196,16 @@ namespace
 	};
 }
 
-
+//From testing, having the bit board being size 6 seems to be the sweet spot. This makes sense as with padding
+//it aligns perfectly with 64 bit boundaries.
 IGameBoardPtr GameBoard::CreateStaticGridBoard6()
 {
 	return std::make_unique<StaticGridBoard<6>>();
 }
 
-IGameBoardPtr GameBoard::CreateStaticGridBoard1000()
+//made this to play around with the size of the grid just to see if there was anything better than 6 bits and there really isn't.
+//That makes me happy since it's very space efficient and it lines up with what you'd expect given the hardware.
+IGameBoardPtr GameBoard::CreateStaticGridBoard()
 {
-	return std::make_unique<StaticGridBoard<1000>>();
-}
-
-IGameBoardPtr GameBoard::CreateStaticGridBoard4000()
-{
-	return std::make_unique<StaticGridBoard<4000>>();
-}
-
-IGameBoardPtr GameBoard::CreateStaticGridBoard10000()
-{
-	return std::make_unique<StaticGridBoard<10000>>();
+	return std::make_unique<StaticGridBoard<6>>();
 }
