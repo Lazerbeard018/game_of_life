@@ -1,4 +1,5 @@
 #include "GameBoard/GameBoardInterface.h"
+#include "Game/Game.h"
 #include "Input/Input.h"
 #include "Output/Output.h"
 #include "Tests/TestEngine.h"
@@ -18,11 +19,16 @@ int __cdecl main(int argc, const char* argv[])
 	//Otherwise, run the default program for the test.
 	else
 	{
-		GameBoard::IGameBoardPtr simpleGameBoard = GameBoard::CreateSimpleAliveCellListBoard();
+		GameBoard::IGameBoardPtr multiGridBoard = GameBoard::CreateMultiGridBoard(&GameBoard::CreateStaticGridBoard1000);
 
-		Input::CreateGameFromStdInput(*simpleGameBoard);
+		Input::CreateGameFromStdInput(*multiGridBoard);
 
-		Output::PrintGameBoardToStdOutput(*simpleGameBoard);
+		for (int i = 0; i < 10; ++i)
+		{
+			Game::RunGameOfLifeGeneration(*multiGridBoard);
+		}
+
+		Output::PrintGameBoardToStdOutput(*multiGridBoard);
 	}
 	
 	return 0;

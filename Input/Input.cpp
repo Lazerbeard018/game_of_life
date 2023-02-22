@@ -33,7 +33,7 @@ namespace
 
 			long long y = atoll(numberIt->str().c_str());
 
-			gameBoard.CreateCell({ x, y });
+			gameBoard.SetCell({ x, y }, true);
 		}
 
 		return true;
@@ -53,7 +53,10 @@ void Input::CreateGameFromStream(std::istream& stream, GameBoard::IGameBoard& ga
 
 	while (AddCellsFromString(input, gameBoard))
 	{
-		std::getline(stream, input);
+		if (!std::getline(stream, input))
+		{
+			break;
+		}
 	}
 
 	//Signal that this version of the board is ready to be read;

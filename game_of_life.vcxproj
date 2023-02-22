@@ -109,7 +109,6 @@
       <TreatAngleIncludeAsExternal>true</TreatAngleIncludeAsExternal>
       <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
       <DisableAnalyzeExternal>true</DisableAnalyzeExternal>
-      <CallingConvention>VectorCall</CallingConvention>
       <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
     </ClCompile>
     <Link>
@@ -119,22 +118,22 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <WarningLevel>EnableAllWarnings</WarningLevel>
+      <WarningLevel>Level3</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
-      <EnableEnhancedInstructionSet>AdvancedVectorExtensions512</EnableEnhancedInstructionSet>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <TreatAngleIncludeAsExternal>true</TreatAngleIncludeAsExternal>
       <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
       <DisableAnalyzeExternal>true</DisableAnalyzeExternal>
-      <CallingConvention>VectorCall</CallingConvention>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -146,6 +145,7 @@
   <ItemGroup>
     <ClCompile Include="GameBoard\GameBoardCoord.cpp" />
     <ClCompile Include="GameBoard\GameBoardInterface.h" />
+    <ClCompile Include="GameBoard\Implementations\MultiGridBoard.cpp" />
     <ClCompile Include="GameBoard\Implementations\StaticGridBoard.cpp" />
     <ClCompile Include="GameBoard\Implementations\SimpleAliveCelListBoard.cpp" />
     <ClCompile Include="Game\Game.cpp" />
@@ -173,6 +173,10 @@
     <None Include="testdata\8x8_Board\VerticalLive\input.life" />
     <None Include="testdata\Basic_IO\Identity\diff.life" />
     <None Include="testdata\Basic_IO\Identity\input.life" />
+    <None Include="testdata\Basic_IO\Negative\diff.life" />
+    <None Include="testdata\Basic_IO\Negative\input.life" />
+    <None Include="testdata\Big_Board\OneGeneration\diff.life" />
+    <None Include="testdata\Big_Board\OneGeneration\input.life" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

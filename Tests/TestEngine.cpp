@@ -30,6 +30,7 @@ void Tests::TestEngine::RunAllTests(std::ostream& output) const
 {
 	RunAliveCellListTests(output);
 	RunStaticGridBoardTests(output);
+	RunMultiGridBoardTests(output);
 }
 
 void Tests::TestEngine::RunAliveCellListTests(std::ostream& output) const
@@ -42,8 +43,15 @@ void Tests::TestEngine::RunAliveCellListTests(std::ostream& output) const
 void Tests::TestEngine::RunStaticGridBoardTests(std::ostream& output) const
 { 
 	//Use this board to make sure basic life rules work
-	GameBoard::IGameBoardPtr staticGridBoard = GameBoard::CreateStaticGridBoard64bit();
+	GameBoard::IGameBoardPtr staticGridBoard = GameBoard::CreateStaticGridBoard6();
 	RunTestSuite(output, *staticGridBoard, "8x8_Board");
+}
+
+void Tests::TestEngine::RunMultiGridBoardTests(std::ostream& output) const
+{
+	//Make a multi grid board but use a very small static grid so the numbers are small when we have to deal with traversing boards
+	GameBoard::IGameBoardPtr multiGridBoard = GameBoard::CreateMultiGridBoard(&GameBoard::CreateStaticGridBoard6);
+	RunTestSuite(output, *multiGridBoard, "Big_Board");
 }
 
 void Tests::TestEngine::RunTestSuite(std::ostream& output, GameBoard::IGameBoard& gameBoard, std::string suiteName) const
@@ -152,11 +160,44 @@ bool LoadAndRun1GenerationAndDiffFromDiskTest(std::ostream& output, const std::s
 	return DiffFromDisk(output, suiteName, testName, gameBoard);
 }
 
+bool LoadAndRun10GenerationAndDiffFromDiskTest(std::ostream& output, const std::string& suiteName, const std::string& testName, GameBoard::IGameBoard& gameBoard)
+{
+	if (!LoadTestDataFromName(output, suiteName, testName, gameBoard))
+	{
+		output << "        Test data at " << suiteName << "\\" << testName << " failed to load." << std::endl;
+		return false;
+	}
+
+	for (int i = 0; i < 15; ++i)
+	{
+		output << "        Running generation " << i << std::endl;
+		Game::RunGameOfLifeGeneration(gameBoard);
+	}
+
+	return DiffFromDisk(output, suiteName, testName, gameBoard);
+}
+
+bool LoadAndRun100GenerationAndDiffFromDiskTest(std::ostream& output, const std::string& suiteName, const std::string& testName, GameBoard::IGameBoard& gameBoard)
+{
+	if (!LoadTestDataFromName(output, suiteName, testName, gameBoard))
+	{
+		output << "        Test data at " << suiteName << "\\" << testName << " failed to load." << std::endl;
+		return false;
+	}
+
+	for (int i = 0; i < 100; ++i)
+	{
+		Game::RunGameOfLifeGeneration(gameBoard);
+	}
+
+	return DiffFromDisk(output, suiteName, testName, gameBoard);
+}
+
 Tests::TestEngine::TestEngine()
 {
 	m_testSuites["Basic_IO"] =
 	{
-		Test("Identity", *LoadAndDiffFromDiskTest)
+		Test("Identity", *LoadAndDiffFromDiskTest),
 	};
 	m_testSuites["8x8_Board"] =
 	{
@@ -164,5 +205,14 @@ Tests::TestEngine::TestEngine()
 		Test("4Points", *LoadAndDiffFromDiskTest),
 		Test("VerticalLive", *LoadAndRun1GenerationAndDiffFromDiskTest),
 		Test("OneGeneration", *LoadAndRun1GenerationAndDiffFromDiskTest)
+	};
+	m_testSuites["Big_Board"] =
+	{
+		Test("Negative", *LoadAndDiffFromDiskTest),
+		Test("BorderTraversal", *LoadAndRun1GenerationAndDiffFromDiskTest),
+		Test("VerticalLive", *LoadAndRun1GenerationAndDiffFromDiskTest),
+		Test("OneGeneration", *LoadAndRun1GenerationAndDiffFromDiskTest),
+		Test("TenGeneration", *LoadAndRun10GenerationAndDiffFromDiskTest),
+		Test("OneHundredGeneration", *LoadAndRun100GenerationAndDiffFromDiskTest),
 	};
 }

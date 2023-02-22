@@ -8,7 +8,23 @@ void Output::PrintGameBoardToStream(std::ostream& stream, const GameBoard::IGame
 	stream << "#Life 1.06" << std::endl;
 
 	//Iterate all the live cells and print em out
-	gameBoard.IterateCurrentGenerationAliveCells([&stream](const GameBoard::Coord& liveCellCoord)
+	GameBoard::Coord zero{ 0,0 };
+	gameBoard.IterateCurrentGenerationAliveCells(zero, [&stream](const GameBoard::Coord& liveCellCoord)
+		{
+			stream << liveCellCoord.x << " " << liveCellCoord.y << std::endl;
+		});
+}
+
+void PrintGameBoardToStreamViaScanlines(std::ostream& stream, const GameBoard::IGameBoard& gameBoard)
+{
+	//Write the header 
+	stream << "#Life 1.06" << std::endl;
+
+	//Iterate all the live cells and print em out
+	GameBoard::Coord zero{ 0,0 };
+
+	//gameBoard.GetCell();
+	gameBoard.IterateCurrentGenerationAliveCells(zero, [&stream](const GameBoard::Coord& liveCellCoord)
 		{
 			stream << liveCellCoord.x << " " << liveCellCoord.y << std::endl;
 		});

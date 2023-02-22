@@ -31,6 +31,8 @@ namespace Tests
 
 		void RunStaticGridBoardTests(std::ostream& output) const;
 
+		void RunMultiGridBoardTests(std::ostream& output) const;
+
 		void RunTestSuite(std::ostream& output, GameBoard::IGameBoard& gameBoard, std::string suiteName) const;
 
 	private:

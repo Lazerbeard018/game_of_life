@@ -26,6 +26,9 @@
     <ClCompile Include="Game\Game.cpp">
       <Filter>Game</Filter>
     </ClCompile>
+    <ClCompile Include="GameBoard\Implementations\MultiGridBoard.cpp">
+      <Filter>GameBoard\Implementations</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GameBoard">
@@ -69,6 +72,15 @@
     </Filter>
     <Filter Include="Tests\TestData\8x8_Board\VerticalLive">
       <UniqueIdentifier>{88012bb0-8eca-4d9d-ba7e-aef047094c35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\TestData\Big_Board">
+      <UniqueIdentifier>{eeacb82c-f362-41bf-bf35-b36d9f9c14cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\TestData\Basic_IO\Negative">
+      <UniqueIdentifier>{eb298bcc-a0f4-4c36-8300-6221809f7be3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\TestData\Big_Board\OneGeneration">
+      <UniqueIdentifier>{54160197-6691-40d4-9437-f2ea77009024}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -121,6 +133,18 @@
     </None>
     <None Include="testdata\8x8_Board\VerticalLive\input.life">
       <Filter>Tests\TestData\8x8_Board\VerticalLive</Filter>
+    </None>
+    <None Include="testdata\Basic_IO\Negative\diff.life">
+      <Filter>Tests\TestData\Basic_IO\Negative</Filter>
+    </None>
+    <None Include="testdata\Basic_IO\Negative\input.life">
+      <Filter>Tests\TestData\Basic_IO\Negative</Filter>
+    </None>
+    <None Include="testdata\Big_Board\OneGeneration\diff.life">
+      <Filter>Tests\TestData\Big_Board\OneGeneration</Filter>
+    </None>
+    <None Include="testdata\Big_Board\OneGeneration\input.life">
+      <Filter>Tests\TestData\Big_Board\OneGeneration</Filter>
     </None>
   </ItemGroup>
 </Project>

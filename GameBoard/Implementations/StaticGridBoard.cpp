@@ -1,16 +1,26 @@
 #include "../GameBoardInterface.h"
 #include <bitset>
 
-namespace GameBoard
+using namespace GameBoard;
+
+namespace 
 {
-	template<unsigned int gridSize>
+	/// <summary>
+	/// This is another simple board that I don't expect to use as my final set, however I do think it will be a building block.
+	/// This game board is statically allocated and has a grid of a fixed size. As such it is rather inflexible by itself.
+	/// It won't support big integers and within this grid we are not being space efficient (we are storing data to account
+	/// for empty spaces) but it's very easy to run the rules of the game of life on such a board, since we can iterate all the locations
+	/// and compare adjacent spaces.
+	/// </summary>
+	/// <typeparam name="gridSize">The size of the grid. The memory footprint of this board will be gridSize^2 * 2, so a 1000x1000 
+	/// grid would take .25MB and a 4000x4000 grid would take 4MB</typeparam>
+	template<int gridSize>
 	class StaticGridBoard : public IGameBoard
 	{
 	private:
-		static constexpr unsigned int paddingSize = 1;
-		static constexpr unsigned int gridSizeWithPadding = gridSize + paddingSize * 2;
-		static constexpr unsigned int gridSize1D = gridSize * gridSize;
-		static constexpr unsigned int gridSizeWithPadding1D= gridSizeWithPadding * gridSizeWithPadding;
+		static constexpr int paddingSize = 1;
+		static constexpr int gridSizeWithPadding = gridSize + paddingSize * 2;
+		static constexpr int gridSizeWithPadding1D= gridSizeWithPadding * gridSizeWithPadding;
 		using GridBits = std::bitset<gridSizeWithPadding1D>;
 
 	public:
@@ -27,22 +37,69 @@ namespace GameBoard
 		}
 
 		/// <summary>
-		/// Create a cell at the position laid out. Since the grid is statically allocated to a specific size, cells at coordinates larger than
+		/// The idea is to check if any bits are set. We don't know when this is being called so I don't want to call a grid board
+		/// empty unless both sets of bits have ended up being cleared. This check also includes the padding bits, which I'm
+		/// fine with because if any pad bits are set that means there are cells very near to this board which could spill over
+		/// </summary>
+		/// <returns>If the grid has zero bits set, even on its padding</returns>
+		bool Empty()
+		{
+			return m_gridBits[swapChain].none() && m_gridBits[!swapChain].none();
+		}
+
+		/// <summary>
+		/// Get a cell's alive status at the position. Since the grid is statically allocated to a specific size, cells at coordinates larger than
 		/// the grid size will be discarded.
 		/// </summary>
-		/// <param name="position">The position of the alive cell we wish to create. Between [0, gridSize]</param>
-		void CreateCell(const Coord& position)
+		/// <param name="position">The position of the cell we wish to check. Between [0, gridSize]</param>
+		bool GetCell(const Coord& position) const
 		{
-			if (position.x >= 0 && position.y >= 0  &&
-				position.x < gridSize && position.y < gridSize)
+			Unit coord1D = 0;
+			if (Get1DIndexFromCoord(position, gridSizeWithPadding, paddingSize, coord1D) && coord1D < gridSizeWithPadding1D)
 			{
-				m_gridBits[!swapChain].set(Get1DIndexFromCoord(position, gridSizeWithPadding, paddingSize));
+				return m_gridBits[swapChain].test(coord1D);
 			}
-			else
+
+			return false;
+		}
+
+		/// <summary>
+		/// Get a cell's alive status at the position. Since the grid is statically allocated to a specific size, cells at coordinates larger than
+		/// the grid size will be discarded.
+		/// </summary>
+		/// <param name="position">The position of the cell we wish to check. Between [0, gridSize]</param>
+		bool GetCurrentCell(const Coord& position) const
+		{
+			Unit coord1D = 0;
+			if (Get1DIndexFromCoord(position, gridSizeWithPadding, paddingSize, coord1D) && coord1D < gridSizeWithPadding1D)
 			{
-				int outputboardsize = gridSize;
-				std::cout << "Cell at position " << position.x << ", " << position.y << " cannot be created because it is outside the bounds of this board. board size = " << outputboardsize << std::endl;
+				return m_gridBits[!swapChain].test(coord1D);
 			}
+
+			return false;
+		}
+
+		/// <summary>
+		/// Set a cell's alive status at the position laid out. Since the grid is statically allocated to a specific size, cells at coordinates larger than
+		/// the grid size will be discarded.
+		/// </summary>
+		/// <param name="position">The position of the alive cell we wish to set. Between [0, gridSize]</param>
+		void SetCell(const Coord& position, bool value)
+		{
+			Unit coord1D = 0;
+			if (Get1DIndexFromCoord(position, gridSizeWithPadding, paddingSize, coord1D) && coord1D < gridSizeWithPadding1D)
+			{
+				m_gridBits[!swapChain].set(coord1D, value);
+			}
+		}
+
+		/// <summary>
+		/// These are constrained to the size of the grid we allocated for them
+		/// </summary>
+		/// <returns>maximum allowable length</returns>
+		Unit MaximumBoardLength()
+		{
+			return gridSize;
 		}
 
 		/// <summary>
@@ -57,14 +114,16 @@ namespace GameBoard
 		/// This one just walks the grid and looks at itself and the adjacent cells
 		/// </summary>
 		/// <param name="gameSim">function that runs the game of life</param>
-		void IterateCurrentGenerationBoard(GameSimFunction gameSim)
+		void IterateCurrentGenerationBoard(GameSimFn gameSim)
 		{
 			Coord placement = { 0,0 };
 			for (unsigned int x = 0; x < gridSize; ++x)
 			{
 				for (unsigned int y = 0; y < gridSize; ++y)
 				{
-					Unit index = Get1DIndexFromCoord(Coord{ x, y }, gridSizeWithPadding, paddingSize);
+					Unit index = 0;
+					Get1DIndexFromCoord(Coord{ x, y }, gridSizeWithPadding, paddingSize, index);
+
 					unsigned int numNeighborsSet =
 						m_gridBits[swapChain].test(index - gridSizeWithPadding - 1) +
 						m_gridBits[swapChain].test(index - gridSizeWithPadding - 0) +
@@ -76,9 +135,9 @@ namespace GameBoard
 						m_gridBits[swapChain].test(index + gridSizeWithPadding + 1);
 
 					bool alive = false;
-					gameSim(m_gridBits[swapChain][index], numNeighborsSet, alive);
+					gameSim(m_gridBits[swapChain].test(index), numNeighborsSet, alive);
 
-					m_gridBits[!swapChain][index] = alive;
+					m_gridBits[!swapChain].set(index, alive);
 				}
 			}
 		}
@@ -87,13 +146,19 @@ namespace GameBoard
 		/// Walk the grid, report locations of bits that are set.
 		/// </summary>
 		/// <param name="fn">The function to run on all the alive cells.</param>
-		void IterateCurrentGenerationAliveCells(std::function<void(const Coord&)> fn) const
+		void IterateCurrentGenerationAliveCells(const Coord& parentCoord, BoardIteratorFn fn) const
 		{
-			for (size_t i = 0; i < m_gridBits[swapChain].size(); ++i)
+			for (unsigned int y = 0; y < gridSize; ++y)
 			{
-				if (m_gridBits[swapChain].test(i) == true)
+				for (unsigned int x = 0; x < gridSize; ++x)
 				{
-					fn(GetCoordFrom1DIndex(i, gridSizeWithPadding, paddingSize));
+					Coord coord{ x, y };
+					Unit index = 0;
+					Get1DIndexFromCoord(coord, gridSizeWithPadding, paddingSize, index);
+					if (m_gridBits[swapChain].test(index) == true)
+					{
+						fn(Coord{ coord.x + parentCoord.x, coord.y + parentCoord.y });
+					}
 				}
 			}
 		}
@@ -102,9 +167,25 @@ namespace GameBoard
 		bool swapChain;
 		GridBits m_gridBits[2];
 	};
+}
 
-	IGameBoardPtr CreateStaticGridBoard64bit()
-	{
-		return std::make_unique<StaticGridBoard<6>>();
-	}
+
+IGameBoardPtr GameBoard::CreateStaticGridBoard6()
+{
+	return std::make_unique<StaticGridBoard<6>>();
+}
+
+IGameBoardPtr GameBoard::CreateStaticGridBoard1000()
+{
+	return std::make_unique<StaticGridBoard<1000>>();
+}
+
+IGameBoardPtr GameBoard::CreateStaticGridBoard4000()
+{
+	return std::make_unique<StaticGridBoard<4000>>();
+}
+
+IGameBoardPtr GameBoard::CreateStaticGridBoard10000()
+{
+	return std::make_unique<StaticGridBoard<10000>>();
 }
